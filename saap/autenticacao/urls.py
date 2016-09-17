@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
-from .views import (LoginView, RegistroView, PerfilView, LogoutView)
+from .views import (LoginView, RegistroView, PerfilView, LogoutView, ExcluirContaView)
 """from django.contrib import admin"""
 """from utils.views import ResetPasswordRequestView, PasswordResetConfirmView"""
 """from django.conf.urls import include, url"""
@@ -18,6 +18,8 @@ urlpatterns = [
         name='perfil'),
     url(r'^logout/$', login_required(LogoutView.as_view()),
         name='logout'),
+    url(r'^excluir_conta/$', login_required(ExcluirContaView.as_view()),
+        name='excluir_conta'),
     #url(r'^admin/', include(admin.site.urls)),
     #url(r'^recuperacao_senha(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
     #    PasswordResetConfirmView.as_view(), name='reset_password_confirm'),
