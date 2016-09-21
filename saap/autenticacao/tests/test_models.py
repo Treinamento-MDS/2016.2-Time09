@@ -1,5 +1,5 @@
 # coding=utf-8
-from autenticacao.models import Usuario_saap
+from models import Usuario_saap
 import pytest
 # Create your tests here.
 

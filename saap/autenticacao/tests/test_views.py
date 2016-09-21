@@ -1,4 +1,4 @@
-from autenticacao.views import *
+from views import *
 import pytest
 from django.test import Client
 
