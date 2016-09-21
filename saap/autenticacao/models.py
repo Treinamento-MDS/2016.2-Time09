@@ -25,10 +25,6 @@ class Usuario_saap(User):
     def busca_username(cls, username):
         return Usuario_saap.objects.filter(username__startswith=username)
 
-    @classmethod
-    def get_usuario_por_username(cls, username):
-        return Usuario_saap.objects.filter(username = username)
-
 class Cidadao(Usuario_saap):
 
     pass
