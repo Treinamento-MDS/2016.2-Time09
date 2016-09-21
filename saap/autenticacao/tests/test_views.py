@@ -1,3 +1,4 @@
+# coding=utf-8
 from autenticacao.views import *
 import pytest
 from django.test import Client
