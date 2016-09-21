@@ -11,22 +11,9 @@ from django.utils.translation import ugettext
 from django.contrib.auth.forms import (
     AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
 )
-"""from django.core.mail import send_mail
-from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.tokens import default_token_generator
-from django.db.models.query_utils import Q
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template import loader
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
-from django.core.mail import send_mail
-from reset_password.settings import DEFAULT_FROM_EMAIL
-from django.views.generic import *
-from utils.forms import PasswordResetRequestForm, SetPasswordForm"""
 
 # Create your views here.
+
 
 def checar_autenticacao(request, resposta_autenticado, resposta_nao_autenticado):
     if request.user.is_authenticated():
@@ -35,16 +22,24 @@ def checar_autenticacao(request, resposta_autenticado, resposta_nao_autenticado)
         resposta = render(request, resposta_nao_autenticado)
     return resposta
 
+
 def checar_confirmacao(atributo, confirmacao_atributo):
     if atributo == confirmacao_atributo:
         return atributo
+
+def resposta_vazio (request,nao_vazio):
+    if nao_vazio == False:
+        messages.error(request, 'Preencha todos os campos')
+        nao_vazio = redirect('cadastro')
+    return nao_vazio
 
 def checar_vazio(campos):
     nao_vazio = True
     for campo in campos:
         if campo == "":
-            nao_vazio = False
+            nao_vazio=False
     return nao_vazio
+
 
 class LoginView(View):
     http_method_names = [u'get', u'post']
@@ -115,6 +110,10 @@ class RegistroView(View):
             request.POST['municipio'], request.POST['uf'], \
             request.POST['data_de_nascimento']]
 
+        #nao_vazio = checar_vazio(campos)
+        #resposta_vazio(request,nao_vazio)
+
+
         if checar_vazio(campos):
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -128,6 +127,27 @@ class RegistroView(View):
 
             if Cidadao.get_usuario_por_username(username).count() == 0 and \
                 OrganizadorContatos.get_usuario_por_username(username).count() == 0:
+                email= request.POST['email']
+                confirmacao_email =  request.POST['confirmacao_email']
+
+                if email!= confirmacao_email:
+                    messages.error(request, 'Emails fornecidos não conferem')
+                    response = redirect('cadastro')
+                    return response
+
+                password = request.POST['password']
+                confirmacao_password = request.POST['confirmacao_password']
+
+                if password!= confirmacao_password:
+                    messages.error(request, 'Senhas fornecidas não conferem')
+                    response = redirect('cadastro')
+                    return response
+
+                if len(password)<6:
+                    messages.error(request, 'Utilize ao menos 6 caracteres para senhas')
+                    response = redirect('cadastro')
+                    return response
+
                 if request.path == '/cadastro/':
                     user = Cidadao()
                     user.first_name = first_name
@@ -156,9 +176,12 @@ class RegistroView(View):
                     user.save()
                     response = render(request, 'login.html')
             else:
-                response = redirect('/erroCadastro')
+                messages.error(request, 'Usuário já cadastrado.')
+                response = render(request, 'cadastro')
+
         else:
-            response = redirect('/erroCadastro')
+            messages.error(request, 'Preencha todos os campos.')
+            response = redirect('cadastro')
 
         return response
 
