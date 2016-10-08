@@ -18,3 +18,8 @@ def teste_usuario_logado(client):
 	user,client = logar_usuario(client)
 
 	assert user is not None
+
+@pytest.mark.django_db
+def test_login_view_get(client):
+	response = client.get('/login/')
+	assert 300 >= response.status_code < 400
