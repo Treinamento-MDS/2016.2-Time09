@@ -12,3 +12,9 @@ def logar_usuario(client):
 	user.save()
 	client.login(username=user.username, password="123456")
 	return user,client
+
+@pytest.mark.django_db
+def teste_usuario_logado(client):
+	user,client = logar_usuario(client)
+
+	assert user is not None
