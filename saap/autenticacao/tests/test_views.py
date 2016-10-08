@@ -23,3 +23,8 @@ def teste_usuario_logado(client):
 def test_login_view_get(client):
 	response = client.get('/login/')
 	assert 300 >= response.status_code < 400
+
+def test_registro_view_get():
+	client = Client()
+	response = client.get('/cadastro/')
+	assert response.status_code is 200
