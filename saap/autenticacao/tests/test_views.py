@@ -39,3 +39,8 @@ def teste_checar_autenticacao(request,client):
 	response = checar_autenticacao(request, '/perfil/', '/login/')
 
 	assert response is '/perfil/'
+
+def test_checar_confirmacao_true():
+	 response = checar_confirmacao('teste','teste')
+
+	 assert response is 'teste'
