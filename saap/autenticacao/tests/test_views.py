@@ -28,3 +28,14 @@ def test_registro_view_get():
 	client = Client()
 	response = client.get('/cadastro/')
 	assert response.status_code is 200
+
+@pytest.mark.django_db
+def teste_checar_autenticacao(request,client):
+	rf = RequestFactory()
+	user,client = logar_usuario(client)
+	cliente = Client()
+	request = rf.post('/perfil/')
+	request.user = user
+	response = checar_autenticacao(request, '/perfil/', '/login/')
+
+	assert response is '/perfil/'
