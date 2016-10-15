@@ -292,3 +292,17 @@ class TicketView(View):
             response = render(request, 'perfil.html')
 
         return response
+
+class PublicarTicketView(View):
+    http_method_names = [u'get', u'post', u'delete']
+
+    def post(self, request):
+        ticket_id = request.POST.get('ticket_id')
+        ticket = Ticket.objects.get(id = ticket_id)
+        ticket.aprovado = True
+
+        if ticket.aprovado == True:
+            ticket.save()
+            messages.success(request, 'Ticket enviado para pagina do Vereador')
+            response = render (request, 'perfil.html') #pagina do vereador
+            return response
