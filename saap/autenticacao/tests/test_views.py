@@ -30,17 +30,6 @@ def test_registro_view_get():
 	response = client.get('/cadastro/')
 	assert response.status_code is 200
 
-@pytest.mark.django_db
-def teste_checar_autenticacao(request,client):
-	rf = RequestFactory()
-	user,client = logar_usuario(client)
-	cliente = Client()
-	request = rf.post('/perfil/')
-	request.user = user
-	response = checar_autenticacao(request, '/perfil/', '/login/')
-
-	assert response is '/perfil/'
-
 def test_checar_vazio_true():
 
 	variaveis = ['teste']
@@ -105,4 +94,18 @@ def test_checar_autenticacao():
 	request.user = authenticate(username='cidadao', password='123')
 	autenticacao = checar_autenticacao(request, True, False)
 	assert autenticacao == True
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_mudar_senha_view_get():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.get('/mudar_senha/')
+	assert response.status_code is 200
 	cidadao.delete()
