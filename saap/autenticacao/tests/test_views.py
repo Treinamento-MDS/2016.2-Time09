@@ -1,5 +1,6 @@
 # coding=utf-8
 from autenticacao.views import *
+from autenticacao.models import *
 import pytest
 from django.test import Client
 from django.contrib.auth.models import User
@@ -39,3 +40,69 @@ def teste_checar_autenticacao(request,client):
 	response = checar_autenticacao(request, '/perfil/', '/login/')
 
 	assert response is '/perfil/'
+
+def test_checar_vazio_true():
+
+	variaveis = ['teste']
+	assert checar_vazio(variaveis)
+
+def test_checar_vazio_false():
+
+	variaveis = ['']
+	assert checar_vazio(variaveis) is False
+
+def test_checar_confirmacao():
+	return checar_confirmacao('teste','teste')
+
+def test_registro_view_get():
+	client = Client()
+	response = client.get('/cadastro/')
+	assert response.status_code is 200
+
+@pytest.mark.django_db
+def test_registro_view_get_login():
+
+	client = Client()
+	client.login(username='test',password='test')
+	response = client.get('/cadastro/')
+	assert response.status_code is 200
+
+@pytest.mark.django_db
+def test_tipo_usuario_cidadao():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	response = client.post('/', {'username': 'cidadao', 'password': '123'})
+	assert response.status_code is 200
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_tipo_usuario_organizador_contatos():
+
+	organizador = OrganizadorContatos()
+	organizador.username = 'organizador'
+	organizador.set_password('123')
+	organizador.data_de_nascimento = '1900-01-01'
+	organizador.save()
+	client = Client()
+	response = client.post('/', {'username': 'organizador', 'password': '123'})
+	assert response.status_code is 200
+	organizador.delete()
+
+@pytest.mark.django_db
+def test_checar_autenticacao():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	request = Client()
+	request.user = authenticate(username='cidadao', password='123')
+	autenticacao = checar_autenticacao(request, True, False)
+	assert autenticacao == True
+	cidadao.delete()
