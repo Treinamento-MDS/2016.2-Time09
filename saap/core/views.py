@@ -306,7 +306,3 @@ class PublicarTicketView(View):
             messages.success(request, 'Ticket enviado para pagina do Vereador')
             response = render (request, 'perfil.html') #pagina do vereador
             return response
-
-        else:
-            messages.error(request, 'Erro ao tentar publicar Ticket')
-            return render (request, 'redirect/')
