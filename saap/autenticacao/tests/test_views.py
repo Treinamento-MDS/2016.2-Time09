@@ -96,6 +96,7 @@ def test_checar_autenticacao():
 	assert autenticacao == True
 	cidadao.delete()
 
+
 @pytest.mark.django_db
 def test_mudar_senha_view_get():
 
@@ -109,3 +110,9 @@ def test_mudar_senha_view_get():
 	response = client.get('/mudar_senha/')
 	assert response.status_code is 200
 	cidadao.delete()
+
+
+def test_checar_confirmacao_true():
+	 response = checar_confirmacao('teste','teste')
+
+	 assert response is 'teste'
