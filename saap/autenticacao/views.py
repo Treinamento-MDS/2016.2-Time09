@@ -50,11 +50,8 @@ class LoginView(View):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            if user.is_active:
-                login(request, user)
-                return checar_tipo_usuario(request, username)
-            else:
-                messages.error(request, 'Conta desativada!')
+            login(request, user)
+            return checar_tipo_usuario(request, username)
         else:
             messages.success(request, 'Nome de usuário e/ou senha inválido(s)!')
 

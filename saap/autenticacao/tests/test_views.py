@@ -116,3 +116,16 @@ def test_checar_confirmacao_true():
 	 response = checar_confirmacao('teste','teste')
 
 	 assert response is 'teste'
+
+@pytest.mark.django_db
+def test_usuario_senha_errada():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	response = client.post('/', {'username': 'cidadao', 'password': '321'})
+	assert response.status_code is 200
+	cidadao.delete()
