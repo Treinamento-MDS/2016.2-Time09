@@ -60,8 +60,8 @@
                   <a class="btn-floating btn-large waves-effect waves-light saap-dark-green right" type="submit"><i class="material-icons">delete</i></a>
                   <form action="/publicar_ticket/" method="POST">
             {% csrf_token %}
-                  <input type="hidden" name="ticket_id" value="{{ticket.id}}"> 
-                  <button class="btn-floating btn-large waves-effect waves-light saap-dark-green right" type="submit"><i class="material-icons">done</i></button>
+                  <input type="hidden" name="ticket_id" value="{{ticket.id}}">
+                  {% if ticket.aprovado == False%}<button class="btn-floating btn-large waves-effect waves-light saap-dark-green right" type="submit"><i class="material-icons">done</i></button>{% endif %}
                   </form>
                  <p> {{ ticket.titulo }}<br>
                    {{ ticket.tipo_ticket }}<br>
