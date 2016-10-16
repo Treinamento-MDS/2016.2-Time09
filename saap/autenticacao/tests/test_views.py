@@ -92,10 +92,9 @@ def test_checar_autenticacao():
 	cidadao.save()
 	request = Client()
 	request.user = authenticate(username='cidadao', password='123')
-	autenticacao = checar_autenticacao(request, True, False)
-	assert autenticacao == True
+	autenticacao = checar_autenticacao(request, 'perfil.html', 'login.html')
+	assert autenticacao.status_code is 200
 	cidadao.delete()
-
 
 @pytest.mark.django_db
 def test_mudar_senha_view_get():
@@ -110,7 +109,6 @@ def test_mudar_senha_view_get():
 	response = client.get('/mudar_senha/')
 	assert response.status_code is 200
 	cidadao.delete()
-
 
 def test_checar_confirmacao_true():
 	 response = checar_confirmacao('teste','teste')
@@ -127,5 +125,176 @@ def test_usuario_senha_errada():
 	cidadao.save()
 	client = Client()
 	response = client.post('/', {'username': 'cidadao', 'password': '321'})
+	assert response.status_code is 200
+	cidadao.delete()
+
+def test_criar_organizador_get():
+
+	client = Client()
+	response = client.get('/criar_organizador/')
+	assert response.status_code is 200
+
+@pytest.mark.django_db
+def test_registro_view_post_cidadao():
+
+	client = Client()
+	response = client.post('/cadastro/', {'first_name': 'Cidadão', \
+		'last_name': 'Teste', 'username': 'cidadao', \
+		'email': 'cidadao@teste.com', 'confirmacao_email': 'cidadao@teste.com',\
+		'password': '123', 'confirmacao_password': '123', 'sexo': 'Masculino', \
+		'municipio': 'Brasilia', 'uf': 'DF', 'data_de_nascimento': \
+		'1900-01-01'})
+	cidadao = Cidadao.objects.get(username='cidadao')
+	assert cidadao is not None
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_registro_view_post_organizador_contatos():
+
+	client = Client()
+	response = client.post('/criar_organizador/', {'first_name': 'Organizador',\
+		'last_name': 'Teste', 'username': 'organizador', \
+		'email': 'organizador@teste.com', 'confirmacao_email': \
+		'organizador@teste.com', 'password': '123', 'confirmacao_password': \
+		'123', 'sexo': 'Masculino', 'municipio': 'Brasilia', 'uf': 'DF', \
+		'data_de_nascimento': '1900-01-01'})
+	organizador = OrganizadorContatos.objects.get(username='organizador')
+	assert organizador is not None
+	organizador.delete()
+
+@pytest.mark.django_db
+def test_mudar_senha_view_post():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.post('/mudar_senha/', {'nova_senha': '321', \
+		'confirmacao_nova_senha': '321'})
+	cidadao_teste_nova_senha = authenticate(username=cidadao.username, \
+		password='321')
+	assert cidadao_teste_nova_senha.username == cidadao.username
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_mudar_senha_view_post_senhas_diferentes():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.post('/mudar_senha/', {'nova_senha': '111', \
+		'confirmacao_nova_senha': '222'})
+	cidadao_teste_senha_antiga = authenticate(username=cidadao.username, \
+		password='123')
+	assert cidadao_teste_senha_antiga is not None
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_excluir_conta_view_get():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.get('/excluir_conta/')
+	assert response.status_code is 200
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_excluir_conta_view_post():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.post('/excluir_conta/', {'password': '123'})
+	cidadao_teste_exclusao = authenticate(username='cidadao', password='123')
+	assert cidadao_teste_exclusao is None
+
+@pytest.mark.django_db
+def test_excluir_conta_senha_errada_view_post():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.post('/excluir_conta/', {'password': '321'})
+	cidadao_teste_exclusao = authenticate(username='cidadao', password='123')
+	assert cidadao_teste_exclusao is not None
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_registro_view_post_cidadao_ja_existe():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	response = client.post('/cadastro/', {'first_name': 'Cidadão', \
+		'last_name': 'Teste', 'username': 'cidadao', \
+		'email': 'cidadao@teste.com', 'confirmacao_email': 'cidadao@teste.com',\
+		'password': '123', 'confirmacao_password': '123', 'sexo': 'Masculino', \
+		'municipio': 'Brasilia', 'uf': 'DF', 'data_de_nascimento': \
+		'1900-01-01'})
+	cidadao_teste = Cidadao.objects.filter(first_name='Cidadão')
+	assert cidadao_teste.count() == 0
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_registro_view_post_cidadao_campo_vazio():
+
+	client = Client()
+	response = client.post('/cadastro/', {'first_name': '', \
+		'last_name': 'Teste', 'username': 'cidadao', \
+		'email': 'cidadao@teste.com', 'confirmacao_email': 'cidadao@teste.com',\
+		'password': '123', 'confirmacao_password': '123', 'sexo': 'Masculino', \
+		'municipio': 'Brasilia', 'uf': 'DF', 'data_de_nascimento': \
+		'1900-01-01'})
+	cidadao_teste = Cidadao.objects.filter(first_name='Cidadão')
+	assert cidadao_teste.count() == 0
+
+@pytest.mark.django_db
+def test_perfil_view_get():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.get('/perfil/')
+	assert response.status_code is 200
+	cidadao.delete()
+
+@pytest.mark.django_db
+def test_logout_view_get():
+
+	cidadao = Cidadao()
+	cidadao.username = 'cidadao'
+	cidadao.set_password('123')
+	cidadao.data_de_nascimento = '1900-01-01'
+	cidadao.save()
+	client = Client()
+	request = client.post('/', {'username': 'cidadao', 'password': '123'})
+	response = client.get('/logout/')
 	assert response.status_code is 200
 	cidadao.delete()

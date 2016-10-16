@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 
 def checar_autenticacao(request, resposta_autenticado, resposta_nao_autenticado):
     if request.user.is_authenticated():
-        resposta = resposta_autenticado
+        resposta = render(request, resposta_autenticado)
     else:
         resposta = render(request, resposta_nao_autenticado)
     return resposta
