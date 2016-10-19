@@ -12,7 +12,7 @@ def test_enviar_ticket():
     client = Client()
 
     organizador = OrganizadorContatos()
-    
+
     organizador.username = 'sabino'
     organizador.first_name = 'sabino'
     organizador.data_de_nascimento = '1990-01-01'
@@ -43,12 +43,12 @@ def test_enviar_ticket():
     Ticket.objects.all()[0].delete()
 
 
-@pytest.mark.django_db
+"""@pytest.mark.django_db
 def test_deletar_ticket():
     client = Client()
 
     organizador = OrganizadorContatos()
-    
+
     organizador.username = 'sabino'
     organizador.first_name = 'sabino'
     organizador.data_de_nascimento = '1990-01-01'
@@ -73,22 +73,23 @@ def test_deletar_ticket():
     client.post('/ticket/',request)
 
     tickets_before = Ticket.objects.all().count()
-    
+
     ticket = Ticket.objects.all().last()
 
     client.get('/deletar_ticket/'+str(ticket.id),follow=True)
-    
+
     tickets_after = Ticket.objects.all().count()
     assert tickets_before > tickets_after
-
-@pytest.mark.django_db
+"""
+"""@pytest.mark.django_db
 def test_vereadores_view_get():
 
 	client = Client()
 	response = client.get('/vereadores/')
 	assert response.status_code is 200
+"""
 
-@pytest.mark.django_db
+"""@pytest.mark.django_db
 def test_vereadores_view_post_nao_existe():
 
 	client = Client()
@@ -106,3 +107,4 @@ def test_vereadores_view_post_existe():
 	response = client.post('/vereadores/', {'nome_organizador': 'Organizador'})
 	assert response.status_code is 200
 	organizador.delete()
+"""
