@@ -62,7 +62,7 @@ class Oficio(models.Model):
     corpo_texto_doc = models.CharField(max_length=1000000)
 
     @classmethod
-    def busca_por_titulo(titulo_doc):
+    def busca_por_titulo(cls, titulo_doc):
         return Oficio.objects.filter(titulo_documento__startswith=titulo_doc)
 
 
