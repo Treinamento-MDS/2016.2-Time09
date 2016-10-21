@@ -7,6 +7,7 @@ from django.utils.translation import ugettext
 from core.models import Contato, Ticket
 from autenticacao.models import OrganizadorContatos
 from default.views import *
+from django.views.generic.list import ListView
 
 class CadastroView(View):
     http_method_names = [u'get', u'post']
@@ -298,3 +299,6 @@ POST['nome_organizador'])
             resposta = render(request, 'vereadores.html', locals())
 
         return resposta
+
+class GrupoDeContatos(ListView):
+    http_method_names = [u'get', u'post']
