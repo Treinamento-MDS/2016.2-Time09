@@ -24,7 +24,7 @@ class Grupo(models.Model):
         return cls.objects.filter(contatos__cidade__contains=cidade)
 
     @classmethod
-    def filtro_sexo(cls,sexo):
+    def filtro_genero(cls,sexo):
         return cls.objects.filter(contatos__sexo=sexo)
 
 class Contato(models.Model):

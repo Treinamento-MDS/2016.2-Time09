@@ -30,8 +30,6 @@ def test_str_method():
 	assert "Brasileiros" is grupo.__str__()
 	grupo.delete()
 
-
-
 @pytest.mark.django_db
 def test_filtro_nascimento():
 
@@ -61,7 +59,6 @@ def test_filtro_nascimento():
 	grupo.delete()
 	contato.delete()
 
-
 @pytest.mark.django_db
 def test_filtro_cidade():
 
@@ -88,5 +85,33 @@ def test_filtro_cidade():
 	pesquisa = Grupo.filtro_cidade(cidade='Taguatinga')[0]
 	c = pesquisa.contatos.get()
 	assert c.cidade == contato.cidade
+	grupo.delete()
+	contato.delete()
+
+@pytest.mark.django_db
+def test_filtro_genero():
+
+	grupo = Grupo()
+	grupo.nome = 'teste-grupo'
+	grupo.save()
+	
+	contato = Contato()	
+	contato.nome = 'teste'
+	contato.data_de_nascimento='1990-01-01'
+	contato.sexo = 'Masculino'
+	contato.endereco = 'Qnl 29 teste casa teste 20'
+	contato.cidade = 'Taguatinga'
+	contato.cep = '72000000'
+	contato.estado = 'DF'
+	contato.email = "teste@teste.com"
+	contato.save()
+
+	contato.grupo.add(grupo)
+	contato.save()
+
+
+	pesquisa = Grupo.filtro_genero(sexo=contato.sexo)
+	c = pesquisa[0].contatos.get()
+	assert c.sexo == contato.sexo
 	grupo.delete()
 	contato.delete()
