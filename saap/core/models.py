@@ -19,6 +19,10 @@ class Grupo(models.Model):
     def filtro_nascimento(cls,mes_do_ano):
         return  cls.objects.filter(contatos__data_de_nascimento__contains=mes_do_ano)
 
+    @classmethod
+    def filtro_cidade(cls,cidade):
+        return cls.objects.filter(contatos__cidade__contains=cidade)
+
 
 class Contato(models.Model):
 
