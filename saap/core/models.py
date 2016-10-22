@@ -10,6 +10,7 @@ from saap import *
 class Grupo(models.Model):
 
     nome = models.CharField(max_length=30)
+    contatos = models.ManyToManyField('Contato',related_name='grupo')
 
     def __str__(self):
         return self.nome
@@ -25,7 +26,6 @@ class Contato(models.Model):
     cep = models.CharField(max_length=8,default='')
     estado = models.CharField(max_length=20,default='')
     email = models.EmailField(max_length=30,default='')
-    grupo = models.ForeignKey(Grupo,related_name='contatos')
     telefone = models.CharField(max_length=7,default='',blank=True,null=True)
     celular = models.CharField(max_length=8,default='',blank=True,null=True)
     fax = models.CharField(max_length=8,default='',blank=True,null=True)
