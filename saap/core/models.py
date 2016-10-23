@@ -75,7 +75,10 @@ class Ticket(models.Model):
     data_publicacao = models.DateField('data_de_publicacao', auto_now=True)
     tipo_ticket = models.CharField(max_length=30)
     aprovado = models.BooleanField(default=False)
-    #file = models.FileField()
+
+
+
+
 
     # @classmethod
     # def current_date(self):
@@ -90,3 +93,4 @@ class Carta(models.Model):
     local = models.CharField(max_length=60)
     assunto = models.CharField(max_length=50)
     texto = models.CharField(max_length=1500)
+
