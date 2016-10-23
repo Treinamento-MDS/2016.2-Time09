@@ -10,15 +10,15 @@ from saap import *
 class Grupo(models.Model):
 
     nome = models.CharField(max_length=30)
-<<<<<<< HEAD
+
     contatos = models.ManyToManyField('Contato',related_name='grupo')
-=======
->>>>>>> models for grupo
+
+
 
     def __str__(self):
         return self.nome
 
-<<<<<<< HEAD
+
     @classmethod
     def filtro_nascimento(cls,mes_do_ano):
         return  cls.objects.filter(contatos__data_de_nascimento__contains=mes_do_ano)
@@ -30,8 +30,8 @@ class Grupo(models.Model):
     @classmethod
     def filtro_genero(cls,sexo):
         return cls.objects.filter(contatos__sexo=sexo)
-=======
->>>>>>> models for grupo
+
+
 
 class Contato(models.Model):
 
@@ -43,10 +43,10 @@ class Contato(models.Model):
     cep = models.CharField(max_length=8,default='')
     estado = models.CharField(max_length=20,default='')
     email = models.EmailField(max_length=30,default='')
-<<<<<<< HEAD
-=======
+
+
     grupo = models.ForeignKey(Grupo,related_name='contatos')
->>>>>>> models for grupo
+
     telefone = models.CharField(max_length=7,default='',blank=True,null=True)
     celular = models.CharField(max_length=8,default='',blank=True,null=True)
     fax = models.CharField(max_length=8,default='',blank=True,null=True)
