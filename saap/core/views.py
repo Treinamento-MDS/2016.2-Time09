@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.utils.translation import ugettext
 from core.models import Contato, Ticket
 from autenticacao.models import OrganizadorContatos
+from django.views.generic.list import ListView
 from default.views import *
 from django.views.generic.list import ListView
 
@@ -300,5 +301,26 @@ POST['nome_organizador'])
 
         return resposta
 
-class GrupoDeContatos(ListView):
+class GrupoDeContatosView(ListView):
     http_method_names = [u'get', u'post']
+
+    model = Contato #grupo
+    template_name = 'grupo_de_contatos.html'
+
+    def getGrupo (self, **kwargs):
+        return Contato.objects(grupo)
+
+    def getData (self, **kwargs):
+        return Contato.objects.filter(data_de_nascimento)
+
+    def getBairro (self, **kwargs):
+        return Contato.objects.filter(bairro)
+
+    def getCidade(self, **kwargs):
+        return Contato.objects.filter(cidade)
+
+    def getCEP(self, **kwargs):
+        return Contato.objects.filter(CEP)
+
+    def getUF (self, **kwargs):
+        return Contato.objects.filter(UF)
