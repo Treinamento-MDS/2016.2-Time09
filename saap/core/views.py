@@ -323,3 +323,41 @@ POST['nome_organizador'])
             resposta = render(request, 'vereadores.html', locals())
 
         return resposta
+
+class OficioView(View):
+    http_method_names = [u'get', u'post']
+
+    def get(self, request):
+        if request.user.is_authenticated():
+            organizadores = OrganizadorContatos.objects.all()
+            lista_organizadores = list(organizadores)
+            response = render(request, 'oficio.html', locals())
+        else:
+            response = render(request, 'login.html')
+        return response
+
+    def post(self, request):
+
+        novo_oficio = Oficio()
+
+        tipo_documento = request.POST['tipo_documento']
+        remetente = request.user.get_full_name()
+        destinatario = request.POST['destinatario']
+        titulo_documento = request.POST['assunto']
+        corpo_texto_doc = request.POST.get('descricao')
+
+        if request.user.is_authenticated() is False:
+
+            response = render(request, 'login.html')
+        else:
+
+            novo_oficio.titulo_documento = titulo_documento
+            novo_oficio.corpo_texto_doc = corpo_texto_doc
+            novo_oficio.remetente = remetente
+            novo_oficio.tipo_documento = tipo_documento
+            novo_oficio.destinatario = destinatario
+            novo_oficio.save()
+
+            response = render(request, 'perfil.html')
+
+        return response
