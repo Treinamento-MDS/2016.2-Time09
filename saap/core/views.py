@@ -9,6 +9,7 @@ from autenticacao.models import OrganizadorContatos
 from django.views.generic.list import ListView
 from default.views import *
 from django.views.generic.list import ListView
+from django.db.models import Q
 
 class CadastroView(View):
     http_method_names = [u'get', u'post']
@@ -301,26 +302,33 @@ POST['nome_organizador'])
 
         return resposta
 
-class GrupoDeContatosView(ListView):
+class CriarGrupoDeContatosView(ListView):
     http_method_names = [u'get', u'post']
 
     model = Contato #grupo
     template_name = 'grupo_de_contatos.html'
 
-    def getGrupo (self, **kwargs):
-        return Contato.objects(grupo)
+    def post(self, request):
+        busca = str(request.POST['grupo_contatos']).lower()
+        query = request.POST['pesquisa']
 
-    def getData (self, **kwargs):
-        return Contato.objects.filter(data_de_nascimento)
-
-    def getBairro (self, **kwargs):
-        return Contato.objects.filter(bairro)
-
-    def getCidade(self, **kwargs):
-        return Contato.objects.filter(cidade)
-
-    def getCEP(self, **kwargs):
-        return Contato.objects.filter(CEP)
-
-    def getUF (self, **kwargs):
-        return Contato.objects.filter(UF)
+        if busca == 'cidade':
+            resposta = Grupo.filtro_cidade(query)
+        elif busca == 'genero':
+            resposta = Grupo.filtro_genero(query)
+        elif busca == 'estado':
+            resposta = Grupo.filtro_estado(query)
+        elif busca == 'data_aniversario':
+            resposta = Grupo.filtro_data_aniversario(query)
+        elif busca == 'nome':
+            resposta = Grupo.filtro_nome(query)
+        else:
+            resposta = Grupo.objects.filter(
+            Q(contatos__nome__contains=query) |
+            Q(contatos__sexo = query) |
+            Q(contatos__estado__contains=query) |
+            Q(contatos__cidade__contains=query) |
+            Q(contatos__data_de_nascimento__contains=query)
+            )
+                
+        return render(request, 'grupo_contatos.html', resposta)
