@@ -10,17 +10,13 @@ from saap import *
 class Grupo(models.Model):
 
     nome = models.CharField(max_length=30)
-
     contatos = models.ManyToManyField('Contato',related_name='grupo')
-
-
 
     def __str__(self):
         return self.nome
 
-
     @classmethod
-    def filtro_nascimento(cls,mes_do_ano):
+    def filtro_data_aniversario(cls,mes_do_ano):
         return  cls.objects.filter(contatos__data_de_nascimento__contains=mes_do_ano)
 
     @classmethod
@@ -31,7 +27,13 @@ class Grupo(models.Model):
     def filtro_genero(cls,sexo):
         return cls.objects.filter(contatos__sexo=sexo)
 
+    @classmethod
+    def filtro_estado(cls,estado):
+        return  cls.objects.filter(contatos__estado__contains=estado)
 
+    @classmethod
+    def filtro_nome(cls,nome):
+        return  cls.objects.filter(contatos__nome__contains=nome)
 
 class Contato(models.Model):
 
@@ -43,10 +45,6 @@ class Contato(models.Model):
     cep = models.CharField(max_length=8,default='')
     estado = models.CharField(max_length=20,default='')
     email = models.EmailField(max_length=30,default='')
-
-
-    grupo = models.ForeignKey(Grupo,related_name='contatos')
-
     telefone = models.CharField(max_length=7,default='',blank=True,null=True)
     celular = models.CharField(max_length=8,default='',blank=True,null=True)
     fax = models.CharField(max_length=8,default='',blank=True,null=True)
@@ -76,15 +74,6 @@ class Ticket(models.Model):
     tipo_ticket = models.CharField(max_length=30)
     aprovado = models.BooleanField(default=False)
 
-
-
-
-
-    # @classmethod
-    # def current_date(self):
-    #     return datetime.datetime.now()
-
-
 class Carta(models.Model):
 
     nome_remetente = models.CharField(max_length=30)
@@ -93,4 +82,3 @@ class Carta(models.Model):
     local = models.CharField(max_length=60)
     assunto = models.CharField(max_length=50)
     texto = models.CharField(max_length=1500)
-
