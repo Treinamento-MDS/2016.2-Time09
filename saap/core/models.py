@@ -7,6 +7,33 @@ from django.core.exceptions import *
 from saap import *
 # from autenticacao.models import
 
+class Grupo(models.Model):
+
+    nome = models.CharField(max_length=30)
+    contatos = models.ManyToManyField('Contato',related_name='grupo')
+
+    def __str__(self):
+        return self.nome
+
+    @classmethod
+    def filtro_data_aniversario(cls,mes_do_ano):
+        return  cls.objects.filter(contatos__data_de_nascimento__contains=mes_do_ano)
+
+    @classmethod
+    def filtro_cidade(cls,cidade):
+        return cls.objects.filter(contatos__cidade__contains=cidade)
+
+    @classmethod
+    def filtro_genero(cls,sexo):
+        return cls.objects.filter(contatos__sexo=sexo)
+
+    @classmethod
+    def filtro_estado(cls,estado):
+        return  cls.objects.filter(contatos__estado__contains=estado)
+
+    @classmethod
+    def filtro_nome(cls,nome):
+        return  cls.objects.filter(contatos__nome__contains=nome)
 
 class Contato(models.Model):
 
@@ -23,19 +50,23 @@ class Contato(models.Model):
     cep = models.CharField(max_length=8,default='')
     estado = models.CharField(max_length=20,default='')
     email = models.EmailField(max_length=30,default='')
-    grupo = models.CharField(max_length=20,default='')
-    titulo = models.CharField(max_length=30,default='')
-    titulo_de_eleitor = models.CharField(max_length=30,default='')
-    zona = models.CharField(max_length=30,default='')
-    secao = models.CharField(max_length=30,default='')
-    profissao = models.CharField(max_length=30,default='')
-    cargo = models.CharField(max_length=30,default='')
-    empresa = models.CharField(max_length=30,default='')
-    dependente_nome = models.CharField(max_length=30,default='')
-    dependente_aniversario = models.CharField(max_length=30,default='')
-    dependente_parentesco = models.CharField(max_length=30,default='')
-    dependente_partido = models.CharField(max_length=30,default='')
-    dependente_data_filiacao = models.DateField('')
+    telefone = models.CharField(max_length=7,default='',blank=True,null=True)
+    celular = models.CharField(max_length=8,default='',blank=True,null=True)
+    fax = models.CharField(max_length=8,default='',blank=True,null=True)
+    cpf = models.CharField(max_length=15,default='',blank=True,null=True)
+    rg= models.CharField(max_length=13,default='',blank=True,null=True)
+    titulo = models.CharField(max_length=30,default='',blank=True,null=True)
+    titulo_de_eleitor = models.CharField(max_length=30,default='',blank=True,null=True)
+    zona = models.CharField(max_length=30,default='',blank=True,null=True)
+    secao = models.CharField(max_length=30,default='',blank=True,null=True)
+    profissao = models.CharField(max_length=30,default='',blank=True,null=True)
+    cargo = models.CharField(max_length=30,default='',blank=True,null=True)
+    empresa = models.CharField(max_length=30,default='',blank=True,null=True)
+    dependente_nome = models.CharField(max_length=30,default='',blank=True,null=True)
+    dependente_aniversario = models.CharField(max_length=30,default='',blank=True,null=True)
+    dependente_parentesco = models.CharField(max_length=30,default='',blank=True,null=True)
+    dependente_partido = models.CharField(max_length=30,default='',blank=True,null=True)
+    dependente_data_filiacao = models.DateField('',blank=True,null=True)
 
 class Ticket(models.Model):
 
@@ -47,12 +78,6 @@ class Ticket(models.Model):
     data_publicacao = models.DateField('data_de_publicacao', auto_now=True)
     tipo_ticket = models.CharField(max_length=30)
     aprovado = models.BooleanField(default=False)
-    #file = models.FileField()
-
-    # @classmethod
-    # def current_date(self):
-    #     return datetime.datetime.now()
-
 
 class Carta(models.Model):
 
