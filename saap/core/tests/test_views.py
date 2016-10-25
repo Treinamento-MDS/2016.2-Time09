@@ -106,3 +106,12 @@ def test_vereadores_view_post_existe():
 	response = client.post('/vereadores/', {'nome_organizador': 'Organizador'})
 	assert response.status_code is 200
 	organizador.delete()
+
+@pytest.mark.django_db
+def test_busca_contatos_cidade():
+
+    client = Client()
+    tipo_busca = "cidade"
+    pesquisa = 'df'
+    response = client.post('busca_contatos/?tipo_busca=%s&pesquisa=%s',tipo_busca,pesquisa)
+    
