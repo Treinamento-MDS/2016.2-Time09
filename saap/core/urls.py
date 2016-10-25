@@ -3,7 +3,7 @@ from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 from .views import (CadastroView, DeletarContatoView, ContatoView, TicketView,
                     AtualizaContato, VereadoresView, PublicarTicketView,
-                    DeletarTicketView, GrupoDeContatosView,CriarGrupoDeContatosView)
+                    DeletarTicketView, BuscaContatosView,CriarGrupoDeContatosView)
 
 urlpatterns = [
     url(r'^cadastro_contato/$', login_required(CadastroView.as_view()),
@@ -22,9 +22,11 @@ urlpatterns = [
         name='deletar_ticket'),
     url(r'^vereadores/$', VereadoresView.as_view(),
         name='vereadores'),
-    url(r'^grupo_contatos/$', GrupoDeContatosView.as_view(),
-        name='grupo_contatos'),
+    # url(r'^grupo_contatos/$', GrupoDeContatosView.as_view(),
+    #     name='grupo_contatos'),
     url(r'^criar_grupo/$', CriarGrupoDeContatosView.as_view(),
         name='criar_grupo'),
+     url(r'^busca_contatos/$', BuscaContatosView.as_view(),
+        name='busca_contatos'),
 
 ]
