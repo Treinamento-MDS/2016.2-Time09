@@ -3,6 +3,7 @@ from django.shortcuts import render
 from autenticacao.models import OrganizadorContatos
 from django.contrib import messages
 from autenticacao.models import *
+from core.models import Grupo
 
 # Create your views here.
 
@@ -60,6 +61,9 @@ def render_contatos_tickets(request):
     lista_contatos = list(contatos)
     tickets = organizador.tickets.all()
     lista_tickets = list(tickets)
+
+    lista_grupo = Grupo.objects.all()
+
     return render(request,'contato.html',locals())
 
 def checar_campos_registro(request):
