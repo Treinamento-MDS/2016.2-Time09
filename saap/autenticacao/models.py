@@ -4,9 +4,6 @@ from django.contrib.auth.models import User
 from django.core.exceptions import *
 from core.models import Contato, Ticket, Carta
 
-
-# Create your models here.
-
 class Usuario_saap(User):
 
     data_de_nascimento = models.DateField()
@@ -30,21 +27,21 @@ class Usuario_saap(User):
     def get_usuario_por_username(cls, username):
         return Usuario_saap.objects.filter(username=username)
 
-
-class Gabinete_saap(models.Model):
-
-    participantes = models.ManyToManyField(Usuario_saap)
-    nome_gabinete = models.CharField(max_length=100)
-    municipio = models.CharField(max_length=250)
-    uf = models.CharField(max_length=2)
-
 class Cidadao(Usuario_saap):
 
     pass
 
-
 class OrganizadorContatos(Usuario_saap):
 
+    pass
+
+class Gabinete(models.Model):
+
+    # parlamentar = models.ForeignKey(AdministradorGabinete, \
+    #                                 on_delete=models.CASCADE)
+    organizadores_contatos = models.ManyToManyField(OrganizadorContatos)
+    # organizadores_agenda = models.ManyToManyField(OrganizadorAgenda)
     contatos = models.ManyToManyField(Contato)
     tickets = models.ManyToManyField(Ticket)
     cartas = models.ManyToManyField(Carta)
+    endereco_gabinete = models.CharField(max_length=100)
