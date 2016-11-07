@@ -206,6 +206,72 @@ class RegistroOrganizadorView(View):
 
         return response
 
+class RegistroAdministradorView(View):
+    http_method_names = [u'get', u'post']
+
+    def get(self, request):
+        resposta = render(request, 'criar_administrador.html')
+        return resposta
+
+    def post(self, request):
+
+        data['first_name'] = request.POST['first_name']
+        data['last_name'] = request.POST['last_name']
+        data['username'] = request.POST['username']
+        data['email'] = request.POST['email']
+        data['confirmacao_email'] = request.POST['confirmacao_email']
+        data['data_de_nascimento'] = request.POST['data_de_nascimento']
+        data['sexo'] = request.POST['sexo']
+        data['municipio'] = request.POST['municipio']
+        data['uf'] = request.POST['uf']
+
+        validado = checar_validacoes_usuario(request, 'criar_administrador.html')
+
+        if validado is True:
+
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            username = request.POST['username']
+            email = checar_confirmacao(request.POST['email'], request.POST['confirmacao_email'])
+            if email:
+                pass
+            else:
+                return render_mensagem_erro(request, 'O e-mail informado é \
+                    diferente da confirmação de e-mail! Digite novamente.', \
+                    'cadastro.html', {'data':data})
+            email = request.POST['email']
+            password = checar_confirmacao(request.POST['password'], request.POST['confirmacao_password'])
+            if password:
+                pass
+            else:
+                return render_mensagem_erro(request, 'A senha informada é \
+                    diferente da confirmação de senha! Digite novamente.', \
+                    'cadastro.html', {'data':data})
+            password = request.POST['password']
+            data_de_nascimento = request.POST['data_de_nascimento']
+            sexo = request.POST['sexo']
+            municipio = request.POST['municipio']
+            uf = request.POST['uf']
+
+            user = OrganizadorContatos()
+            user.first_name = first_name
+            user.last_name = last_name
+            user.username = username
+            user.email = email
+            user.set_password(password)
+            user.data_de_nascimento = data_de_nascimento
+            user.sexo = sexo
+            user.municipio = municipio
+            user.uf = uf
+            user.save()
+            response = render(request, 'login.html')
+
+        else:
+            response = validado
+
+        return response
+
+
 class PerfilView(View):
     http_method_names = [u'get', u'post']
 

@@ -35,6 +35,9 @@ class OrganizadorContatos(Usuario_saap):
 
     pass
 
+class AdministradorGabinete(Usuario_saap):
+    pass    
+
 class Gabinete(models.Model):
 
     # parlamentar = models.ForeignKey(AdministradorGabinete, \
