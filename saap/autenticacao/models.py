@@ -36,7 +36,11 @@ class OrganizadorContatos(Usuario_saap):
     pass
 
 class AdministradorGabinete(Usuario_saap):
-    pass    
+    endereco = models.CharField(max_length=60,default='')
+    cidade = models.CharField(max_length=20,default='')
+    cep = models.CharField(max_length=8,default='')
+    telefonePessoal = models.CharField(max_length=7,default='')
+    telefoneGabinete = models.CharField(max_length=7,default='')   
 
 class Gabinete(models.Model):
 

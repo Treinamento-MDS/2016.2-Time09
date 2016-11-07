@@ -224,6 +224,11 @@ class RegistroAdministradorView(View):
         data['sexo'] = request.POST['sexo']
         data['municipio'] = request.POST['municipio']
         data['uf'] = request.POST['uf']
+        data['cidade'] = request.POST['cidade']
+        data['endereco'] = request.POST['endereco']
+        data['cep'] = request.POST['cep']
+        data['telefone_pessoal'] = request.POST['telefone_pessoal']
+        data['telefone_gabinete'] = request.POST['telefone_gabinete']
 
         validado = checar_validacoes_usuario(request, 'criar_administrador.html')
 
@@ -252,7 +257,12 @@ class RegistroAdministradorView(View):
             sexo = request.POST['sexo']
             municipio = request.POST['municipio']
             uf = request.POST['uf']
-
+            cidade = request.POST['cidade']
+            endereco = request.POST['endereco']
+            cep = request.POST['cep']
+            telefone_pessoal = request.POST['telefone_pessoal']
+            telefone_gabinete = request.POST['telefone_gabinete']
+                        
             user = OrganizadorContatos()
             user.first_name = first_name
             user.last_name = last_name
@@ -263,6 +273,11 @@ class RegistroAdministradorView(View):
             user.sexo = sexo
             user.municipio = municipio
             user.uf = uf
+            user.cidade = cidade
+            user.endereco = endereco
+            user.cep = cep
+            user.telefone_pessoal = telefone_pessoal
+            user.telefone_gabinete = telefone_gabinete
             user.save()
             response = render(request, 'login.html')
 
