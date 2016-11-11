@@ -1,7 +1,19 @@
-languages:
-  Ruby: false
-  JavaScript: false
-  PHP: false
-  Python: true
-# exclude_paths:
-# - "foo/bar.rb"
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - python
+  fixme:
+    enabled: true
+  radon:
+    enabled: true
+ratings:
+  paths:
+  - "**.py"
+exclude_paths:
+- config/
+- "*/tests"
+- static/*
+- saap/saap/*
