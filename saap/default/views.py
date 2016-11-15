@@ -286,6 +286,8 @@ def gerar_pdf_oficio(oficio):
         response['Content-Disposition'] = 'attachment; filename="oficio.pdf"'
         return response
 
+def gerar_mala_direta():
+
 
 def enviar_carta_email(request, carta):
 
