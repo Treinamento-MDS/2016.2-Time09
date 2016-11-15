@@ -9,6 +9,8 @@ from autenticacao.models import OrganizadorContatos
 from default.views import *
 from autenticacao.views import *
 from autenticacao.models import *
+from easy_pdf.views import PDFTemplateView
+from easy_pdf.rendering import render_to_pdf_response
 
 class CadastroView(View):
     http_method_names = [u'get', u'post']
@@ -480,3 +482,6 @@ class EnviarOficioView(View):
     def post(self, request, pk):
         oficio = Oficio.objects.get(id=pk)
         return enviar_oficio_email(request, oficio)
+
+class MalaDiretaView(PDFTemplateView):
+    http_method_names = [u'get']
