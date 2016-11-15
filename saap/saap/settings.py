@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'autenticacao',
     'default',
     'core',
-    'aloe_django'
-    'easy_pdf'
+    'aloe_django',
+    'easy_pdf',
 ]
 
 MIDDLEWARE = [
