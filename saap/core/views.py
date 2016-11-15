@@ -485,3 +485,4 @@ class EnviarOficioView(View):
 
 class MalaDiretaView(PDFTemplateView):
     http_method_names = [u'get']
+    template_name = "mala_direta.html"
