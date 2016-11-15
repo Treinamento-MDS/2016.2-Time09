@@ -486,3 +486,10 @@ class EnviarOficioView(View):
 class MalaDiretaView(PDFTemplateView):
     http_method_names = [u'get']
     template_name = "mala_direta.html"
+
+    def get_context_data(self, **kwargs):
+        return super(MalaDiretaView, self).get_context_data(
+            pagesize="A4",
+            title="Hi there!",
+            **kwargs
+        )
