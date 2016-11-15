@@ -493,3 +493,6 @@ class MalaDiretaView(PDFTemplateView):
             title="Hi there!",
             **kwargs
         )
+
+    def get(self, request):
+        return render_to_pdf_response(request, 'mala_direta.html', {'nome': 'teste'})
