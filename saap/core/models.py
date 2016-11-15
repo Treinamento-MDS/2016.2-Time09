@@ -108,4 +108,9 @@ class Carta(models.Model):
 
 class MalaDireta(models.Model):
 
-    
+        remetente = models.CharField(max_length=100)
+        destinatario = models.CharField(max_length=100)
+        titulo_documento = models.CharField(max_length=100)
+        corpo_texto_doc = models.CharField(max_length=1000000)
+        data = models.DateField('data', auto_now=True)
+        forma_tratamento = models.CharField(max_length=30, default='')
