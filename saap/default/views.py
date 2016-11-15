@@ -17,6 +17,7 @@ from io import StringIO
 from django.core.files.storage import FileSystemStorage
 from datetime import datetime
 
+
 from django.core.mail import EmailMessage
 
 # Create your views here.
@@ -285,8 +286,6 @@ def gerar_pdf_oficio(oficio):
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="oficio.pdf"'
         return response
-
-def gerar_mala_direta():
 
 
 def enviar_carta_email(request, carta):
