@@ -82,7 +82,7 @@ class Oficio(models.Model):
     titulo_documento = models.CharField(max_length=100)
     corpo_texto_doc = models.CharField(max_length=1000000)
     data = models.DateField('data', auto_now=True)
-    forma_tratamento = models.CharField(max_length=30)
+    forma_tratamento = models.CharField(max_length=30, default='')
 
     @classmethod
     def busca_por_titulo(cls, titulo_doc):
@@ -105,3 +105,7 @@ class Carta(models.Model):
     forma_tratamento = models.CharField(max_length=30)
     texto = models.CharField(max_length=1500)
     data = models.DateField('data', auto_now=True)
+
+class MalaDireta(models.Model):
+
+    
