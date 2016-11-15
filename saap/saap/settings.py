@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'default',
     'core',
     'aloe_django'
+    'easy_pdf'
 ]
 
 MIDDLEWARE = [
