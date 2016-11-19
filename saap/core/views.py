@@ -11,6 +11,16 @@ from autenticacao.views import *
 from autenticacao.models import *
 
 
+def init_class_objects(request):
+    try:
+        gabinete = pegar_objeto_usuario(request.user.username).gabinete
+        cartas = gabinete.cartas.all()
+        lista_cartas = list(cartas)
+    except:
+        pass
+    response = checar_administrador_gabinete(request, 'cartas.html', locals())
+    return response
+
 class CadastroView(View):
     http_method_names = [u'get', u'post']
 
@@ -379,14 +389,8 @@ class CartasView(View):
     http_method_names = [u'get', u'post']
 
     def get(self, request):
-        try:
-            gabinete = pegar_objeto_usuario(request.user.username).gabinete
-            cartas = gabinete.cartas.all()
-            lista_cartas = list(cartas)
-        except:
-            pass
-        response = checar_administrador_gabinete(request, 'cartas.html', locals())
 
+        response = init_class_objects(request)
         return response
 
 class DeletarCartaView(View):
@@ -461,16 +465,9 @@ class OficioView(View):
      http_method_names = [u'get', u'post']
 
      def get(self, request):
-        try:
-            gabinete = pegar_objeto_usuario(request.user.username).gabinete
-            oficios = gabinete.oficios.all()
-            lista_oficios = list(oficios)
-        except:
-            pass
-        response = checar_administrador_gabinete(request, 'oficios.html', locals())
+        response = init_class_objects(request)
 
         return response
-
 
 class DeletarOficioView(View):
     http_method_names = [u'get']
