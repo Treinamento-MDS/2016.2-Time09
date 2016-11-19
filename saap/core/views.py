@@ -483,7 +483,7 @@ class EnviarOficioView(View):
         oficio = Oficio.objects.get(id=pk)
         return enviar_oficio_email(request, oficio)
 
-class MalaDiretaView(PDFTemplateView):
+class MalaDiretaPDFView(PDFTemplateView):
     http_method_names = [u'get']
     template_name = "mala_direta.html"
 
@@ -496,3 +496,10 @@ class MalaDiretaView(PDFTemplateView):
 
     def get(self, request):
         return render_to_pdf_response(request, 'mala_direta.html', {'nome': 'teste'})
+
+class MalaDiretaView(View):
+    http_method_names = [u'get', u'post']
+
+    def get(self, request):
+        response = render(request, 'gerar_mala_direta.html')
+        return response
