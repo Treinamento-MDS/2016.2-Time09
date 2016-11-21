@@ -503,3 +503,40 @@ class MalaDiretaView(View):
     def get(self, request):
         response = render(request, 'gerar_mala_direta.html')
         return response
+
+    def post(self, request):
+
+        data = {}
+        data['remetente'] = request.POST['remetente']
+        data['forma_tratamento'] = request.POST['forma_tratamento']
+        data['destinatario'] = request.POST['destinatario']
+        data['corpo_texto_doc'] = request.POST['corpo_texto_doc']
+        data['campos_forma_tratamento'] = ['Senhor(a)', 'Doutor(a)']
+
+        campos_validados = checar_campos([request.POST['remetente'], \
+            request.POST['forma_tratamento'], request.POST['destinatario'], \
+            request.POST['corpo_texto_doc']])
+
+        if campos_validados is True:
+
+            oficio = Oficio()
+            oficio.remetente = request.POST['remetente']
+            oficio.destinatario = request.POST['destinatario']
+            oficio.corpo_texto_doc = request.POST['corpo_texto_doc']
+            oficio.forma_tratamento = request.POST['forma_tratamento']
+            oficio.data = datetime.now()
+            oficio.save()
+
+            organizador = OrganizadorContatos.objects.get(username=request.\
+                user.username)
+            organizador = OrganizadorContatos.objects.get(username=request.user.username)
+            organizador.oficio.add(oficio)
+            response = render(request, 'oficio.html')
+
+        else:
+            messages.error(request, 'O campo "%s" não foi preenchido!'\
+            % campos_enviar_oficio[campos_validados])
+
+            response = render(request, 'gerar_oficio.html', locals())
+
+        return response

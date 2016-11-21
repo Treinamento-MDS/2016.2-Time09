@@ -5,7 +5,7 @@ from .views import (CadastroView, DeletarContatoView, ContatoView, TicketView,
                     AtualizaContato, VereadoresView, PublicarTicketView,
                     DeletarTicketView, GerarCartaView, CartasView,
                     DeletarCartaView, GerarPDFCartaView, EnviarCartaView, OficioView,
-                    DeletarOficioView, GerarOficioView, GerarPDFOficioView, EnviarOficioView, MalaDiretaView)
+                    DeletarOficioView, GerarOficioView, GerarPDFOficioView, EnviarOficioView, MalaDiretaPDFView,MalaDiretaView)
 
 urlpatterns = [
     url(r'^cadastro_contato/$', login_required(CadastroView.as_view()),
@@ -38,12 +38,14 @@ urlpatterns = [
         name = 'gerar_oficio'),
     url(r'^deletar_oficio/(?P<pk>[0-9]+)/$', DeletarOficioView.as_view(),
         name='deletar_oficio'),
-        url(r'^gerar_oficio_pdf/(?P<pk>[0-9]+)/$', login_required(GerarPDFOficioView.as_view()),
+    url(r'^gerar_oficio_pdf/(?P<pk>[0-9]+)/$', login_required(GerarPDFOficioView.as_view()),
         name='gerar_oficio_pdf'),
     url(r'^enviar_oficio/(?P<pk>[0-9]+)/$', login_required(EnviarOficioView.as_view()),
         name='enviar_oficio'),
     url(r'^oficio/$', OficioView.as_view(),
-    name='oficio'),
-    url(r"^mala_direta.pdf$", MalaDiretaView.as_view()
-)
+        name='oficio'),
+    url(r"^mala_direta.pdf$", MalaDiretaPDFView.as_view(),
+        name='mala_direta'),
+    url(r'^gerar_mala_direta/$', MalaDiretaView.as_view(),
+        name='gerar_mala_direta')
 ]
