@@ -1,4 +1,4 @@
-from core.models import Ticket, Carta
+from core.models import Ticket, Carta, MalaDireta
 from autenticacao.models import *
 from core.models import *
 from django.test import Client
@@ -254,3 +254,18 @@ def test_filtro_genero():
 	assert c.sexo == contato.sexo
 	grupo.delete()
 	contato.delete()
+@pytest.mark.django_db
+def test_mala_direta():
+    mala = MalaDireta()
+    mala.remetente = 'email@email.com'
+    mala.destinatario = 'exemplo@email.com'
+    mala.titulo_documento = 'Titulo Exemplo'
+    mala.corpo_texto_doc = 'Texto enviado para email por exemplos'
+    mala.forma_tratamento = 'Senhor'
+    mala.data = '24/10/2016'
+    mala.save()
+
+    malaDireta = MalaDireta.objects.all().count()
+
+    assert malaDireta >= 1
+    mala.delete()
