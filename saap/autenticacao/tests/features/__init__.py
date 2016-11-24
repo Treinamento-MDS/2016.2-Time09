@@ -36,21 +36,19 @@ def register(scenario):
 def click(scenario, link):
   world.browser.find_element_by_link_text(link).click()
 
-@step(r'I select "(.*)" from "(.*)"')
-def multiselect_set_selections(driver, labels, element_id):
-   # el = driver.find_element_by_id(element_id)
-    el = world.browser.find_element_by_id(element_id)
-    for option in el.find_elements_by_tag_name('option'):
-        if option.text in labels:
-            option.click()
-
 #@step(r'I select "(.*)" from "(.*)"')
-#def select(scenario, text, select_id):
-#  print(80*"-")
-#  print("")
-#  print(80*"-")
-#  select = Select(world.browser.find_element_by_id(select_id))
-#  select.select_by_visible_text(text)
+#def multiselect_set_selections(driver, labels, element_id):
+#   # el = driver.find_element_by_id(element_id)
+#    el = world.browser.find_element_by_id(element_id)
+#    for option in el.find_elements_by_tag_name('option'):
+#        if option.text in labels:
+#            option.click()
+
+@step(r'I select "(.*)" from "(.*)"')
+def select(scenario, text, select_id):
+  select = Select(world.browser.find_element_by_id(select_id))
+  world.browser.execute_script("arguments[0].click()", selec)
+  select.select_by_value(text)
 
 @step(r'I access "(.*)"')
 def access_url(step,url):
@@ -77,6 +75,6 @@ def and_i_choose_group1(step, group1):
 def when_i_press_group1(step, group1):
     assert False, 'This step must be implemented'
 
-@step(u'Then I should see "([^"]*)"')
-def then_i_should_see_group1(step, group1):
-    assert False, 'This step must be implemented'
+#@step(u'Then I should see "([^"]*)"')
+#def then_i_should_see_group1(step, group1):
+#    assert False, 'This step must be implemented'
