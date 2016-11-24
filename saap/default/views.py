@@ -267,7 +267,7 @@ def checar_validacoes_usuario(request, template, campos, data):
             response = render_mensagem_erro(request, 'Formato de data \
                 inválido (AAAA-MM-DD)!', template, locals())
     else:
-        response = render_mensagem_erro(request, 'O campo "%s" não foi \
+        response = render_mensagem_erro(request, 'O campo %s não foi \
             preenchido!' % campos[campos_validados], \
             template, locals())
 

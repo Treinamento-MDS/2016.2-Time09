@@ -46,9 +46,11 @@ def click(scenario, link):
 
 @step(r'I select "(.*)" from "(.*)"')
 def select(scenario, text, select_id):
-  select = Select(world.browser.find_element_by_id(select_id))
-  world.browser.execute_script("arguments[0].click()", selec)
-  select.select_by_value(text)
+  #select = Select(world.browser.find_element_by_id(select_id))
+    world.browser.execute_script("arguments[0].SelectedIndex = arguments[1]", "find('div.select-wrapper li', text: '%s')" % select_id, '1')
+    world.browser.execute_script("arguments[0].click", "find('div.select-wrapper li', text: '%s')" % text)
+    #world.browser.execute_script("arguments[0].click();", "find('div.select-wrapper li', text: 'Selecionar')")
+  #select.select_by_value(text)
 
 @step(r'I access "(.*)"')
 def access_url(step,url):
