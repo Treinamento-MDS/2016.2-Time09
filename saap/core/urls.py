@@ -8,7 +8,8 @@ from .views import (CadastroView, DeletarContatoView, ContatoView, TicketView,
                     AdicionarContatoAoGrupo, OficioView,DeletarOficioView,
                     GerarOficioView, GerarPDFOficioView, EnviarOficioView,
                     GabineteView, TicketsView,
-                    DeletarCartaView, GerarPDFCartaView, EnviarCartaView)
+                    DeletarCartaView, GerarPDFCartaView, EnviarCartaView,
+                    MalaDiretaView)
 
 urlpatterns = [
     url(r'^gabinete/contatos/cadastrar_contato/$', login_required(CadastroView.as_view()),
@@ -58,4 +59,6 @@ urlpatterns = [
         name='tickets'),
     url(r'^criar_grupo/$', CriarGrupoDeContatosView.as_view(),
         name='criar_grupo'),
+    url(r'^gabinete/cartas/mala_direta_carta/$', MalaDiretaView.as_view(),
+        name='mala_direta_carta'),
 ]

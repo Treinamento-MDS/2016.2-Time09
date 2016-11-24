@@ -496,3 +496,16 @@ class CriarGrupoDeContatosView(View):
         gabinete.grupos.add(novo_grupo)
 
         return redirect('/gabinete/contatos/')
+
+class MalaDiretaView(View):
+     http_method_names = [u'get', u'post']
+
+     def get(self, request):
+
+        return carregar_pagina_carta_oficio(request, 'mala_direta_carta.html')
+#
+# class EnviarOficioView(View):
+#      http_method_names = [u'post']
+#
+#      def post(self, request, pk):
+#          return enviar_carta_oficio_email(request, Oficio, pk)
