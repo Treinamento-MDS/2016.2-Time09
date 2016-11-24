@@ -110,3 +110,5 @@ class Carta(models.Model):
     forma_tratamento = models.CharField(max_length=30)
     texto = models.CharField(max_length=1500)
     data = models.DateField('data', auto_now=True)
+
+class MalaDireta(models.Model):
