@@ -418,3 +418,11 @@ def deletar_objeto(Objeto, endereco, pk):
     objeto = Objeto.objects.get(id=pk)
     objeto.delete()
     return redirect(endereco)
+
+def get_com_gabinete(request, template):
+    gabinete = pegar_objeto_usuario(request.user.username).gabinete
+    if pegar_objeto_usuario(request.user.username).__class__.__name__ == "OrganizadorContatos":
+        response = render(request, template, locals())
+    else:
+        response = checar_administrador_gabinete(request, template, locals())
+    return response
