@@ -9,6 +9,7 @@ from aloe import around, world, step
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from autenticacao.models import Cidadao
+from time import sleep
 
 @around.each_example
 @contextmanager
@@ -44,13 +45,10 @@ def click(scenario, link):
 #        if option.text in labels:
 #            option.click()
 
-@step(r'I select "(.*)" from "(.*)"')
+@step(r'Eu seleciono "(.*)" de "(.*)"')
 def select(scenario, text, select_id):
-  #select = Select(world.browser.find_element_by_id(select_id))
-    world.browser.execute_script("arguments[0].SelectedIndex = arguments[1]", "find('div.select-wrapper li', text: '%s')" % select_id, '1')
-    world.browser.execute_script("arguments[0].click", "find('div.select-wrapper li', text: '%s')" % text)
-    #world.browser.execute_script("arguments[0].click();", "find('div.select-wrapper li', text: 'Selecionar')")
-  #select.select_by_value(text)
+    world.browser.find_element_by_xpath("//div[@class='select-wrapper']/select[@id='%s']/../input[@class='select-dropdown']" % select_id).click()
+    world.browser.find_element_by_xpath("//li[span[contains(text(),'%s')]]" % text).click()
 
 @step(r'I access "(.*)"')
 def access_url(step,url):
