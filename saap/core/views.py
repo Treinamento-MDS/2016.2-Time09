@@ -384,32 +384,11 @@ class EnviarCartaView(View):
 class BuscaContatosView(ListView):
     http_method_names = [u'post']
 
-    model = Contato
-
-    template_name = 'contatos.html'
-
     def post(self, request):
         busca = str(request.POST['tipo_busca']).lower()
         query = request.POST['pesquisa']
 
-        if busca == 'cidade':
-            resposta = Contato.objects.filter(cidade__startswith=query)
-        elif busca == 'genero':
-            resposta = Contato.objects.filter(sexo__contains=query)
-        elif busca == 'estado':
-            resposta = Contato.objects.filter(estado__startswith=query)
-        elif busca == 'data_aniversario':
-            resposta = Contato.objects.filter(data_de_nascimento__month=query)
-        elif busca == 'nome':
-            resposta = Contato.objects.filter(nome__contains=query)
-        else:
-            resposta = Contato.objects.filter(
-            Q(nome__contains=query) |
-            Q(sexo = query) |
-            Q(estado__contains=query) |
-            Q(cidade__contains=query) |
-            Q(data_de_nascimento__contains=query)
-            )
+        resposta = checar_busca(busca, query, Q)
 
         # resposta = list(resposta)
 
