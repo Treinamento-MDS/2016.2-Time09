@@ -14,10 +14,9 @@ from time import sleep
 @around.each_example
 @contextmanager
 def with_browser(scenario,outline,steps):
-    world.browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+    world.browser = webdriver.Chrome()
     yield
     world.browser.quit()
-    delattr(world,'browser')
 
 @step(r'A user is registered')
 def register(scenario):
@@ -37,18 +36,15 @@ def register(scenario):
 def click(scenario, link):
   world.browser.find_element_by_link_text(link).click()
 
-#@step(r'I select "(.*)" from "(.*)"')
-#def multiselect_set_selections(driver, labels, element_id):
-#   # el = driver.find_element_by_id(element_id)
-#    el = world.browser.find_element_by_id(element_id)
-#    for option in el.find_elements_by_tag_name('option'):
-#        if option.text in labels:
-#            option.click()
 
 @step(r'Eu seleciono "(.*)" de "(.*)"')
 def select(scenario, text, select_id):
     world.browser.find_element_by_xpath("//div[@class='select-wrapper']/select[@id='%s']/../input[@class='select-dropdown']" % select_id).click()
     world.browser.find_element_by_xpath("//li[span[contains(text(),'%s')]]" % text).click()
+
+@step(r'Eu seleciono "(.*)" de "(.*)" na topbar')
+def select(scenario, text, select_id):
+    world.browser.find_element_by_xpath("//a[contains(@class, 'dropdown-button')]" % select_id).click()
 
 @step(r'I access "(.*)"')
 def access_url(step,url):

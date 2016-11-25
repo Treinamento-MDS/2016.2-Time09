@@ -8,16 +8,15 @@ import aloe_webdriver.django
 from aloe import around, world, step
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from autenticacao.models import *
+from autenticacao.models import Cidadao
 from time import sleep
 
 @around.each_example
 @contextmanager
 def with_browser(scenario,outline,steps):
-    world.browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+    world.browser = webdriver.Chrome()
     yield
     world.browser.quit()
-    delattr(world,'browser')
 
 @step(r'A user is registered')
 def register(scenario):
@@ -33,57 +32,24 @@ def register(scenario):
     c.uf = 'DF'
     c.save()
 
-@step(r'A gabinete adm is registered')
-def registerAdmGabinete(scenario):
-    adm = AdministradorGabinete()
-    adm.first_name = 'test_name2'
-    adm.last_name = 'test_last2'
-    adm.username = 'test_name2'
-    adm.email = 'test@email.com2'
-    adm.set_password('123456')
-    adm.data_de_nascimento = '1990-10-10'
-    adm.sexo = 'Mascclino'
-    adm.municipio = 'Brasilia'
-    adm.uf = 'DF'
-    gab = Gabinete()
-    gab.nome_gabinete = 'gabtest'
-    gab.telefone_gabinete = '123456'
-    gab.endereco_gabinete = 'rua x'
-    gab.cidade_gabinete = 'bsb mesmo'
-    gab.cep_gabinete = '1234566'
-    gab.save()
-    adm.gabinete = gab
-    adm.save()
-
-@step(r'A gabinete is created')
-def registerGab(scenario):
-    gab = Gabinete()
-    gab.nome_gabinete = 'gabtest'
-    gab.telefone_gabinete = '123456'
-    gab.endereco_gabinete = 'rua x'
-    gab.cidade_gabinete = 'bsb mesmo'
-    gab.cep_gabinete = '1234566'
-    #registerAdm(scenario,gab)
-    gab.save()
-
-
-
 @step(r'I click in "(.*)"')
 def click(scenario, link):
   world.browser.find_element_by_link_text(link).click()
 
-#@step(r'I select "(.*)" from "(.*)"')
-#def multiselect_set_selections(driver, labels, element_id):
-#   # el = driver.find_element_by_id(element_id)
-#    el = world.browser.find_element_by_id(element_id)
-#    for option in el.find_elements_by_tag_name('option'):
-#        if option.text in labels:
-#            option.click()
 
 @step(r'Eu seleciono "(.*)" de "(.*)"')
 def select(scenario, text, select_id):
     world.browser.find_element_by_xpath("//div[@class='select-wrapper']/select[@id='%s']/../input[@class='select-dropdown']" % select_id).click()
     world.browser.find_element_by_xpath("//li[span[contains(text(),'%s')]]" % text).click()
+
+@step(r'The window is maximized')
+def maximize(scenario):
+	world.browser.maximize_window()
+
+@step(r'Na topbar eu escolho "(.*)" de "(.*)"')
+def select(scenario, text, select_id):
+	world.browser.find_element_by_xpath("//a[contains(@class, '%s')]" % select_id).click()
+	world.browser.find_element_by_xpath("//li[a[contains(text(),'%s')]]" % text).click()
 
 @step(r'I access "(.*)"')
 def access_url(step,url):

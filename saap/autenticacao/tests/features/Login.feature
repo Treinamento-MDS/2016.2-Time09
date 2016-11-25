@@ -1,4 +1,4 @@
-AFeature: Login de Usuário
+Feature: Login de Usuário
   To get acess to the saap features
   As an citizen
   I want to login my self
