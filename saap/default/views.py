@@ -389,7 +389,7 @@ def enviar_carta_email(request, carta):
         to=[request.POST['email_carta']])
     email.send()
 
-    return redirect('/cartas/', messages.success(request, 'Carta enviada por e-mail com sucesso!'))
+    return redirect('/gabinete/cartas/', messages.success(request, 'Carta enviada por e-mail com sucesso!'))
 
 def enviar_oficio_email(request, oficio):
     email = EmailMessage('Oficio de ' + oficio.remetente,
@@ -400,7 +400,7 @@ def enviar_oficio_email(request, oficio):
         to=[request.POST['email_oficio']])
     email.send()
 
-    return redirect('/oficio/', messages.success(request, 'Oficio enviado por e-mail com sucesso!'))
+    return redirect('/gabinete/oficios/', messages.success(request, 'Oficio enviado por e-mail com sucesso!'))
 
 def carregar_pagina_carta_oficio(request, endereco):
     try:
@@ -426,3 +426,15 @@ def get_com_gabinete(request, template):
     else:
         response = checar_administrador_gabinete(request, template, locals())
     return response
+
+def gerar_pdf_carta_oficio(Objeto, pk):
+    if Objeto.__name__ == "Oficio":
+        return gerar_pdf_oficio(Objeto.objects.get(id=pk))
+    else:
+        return gerar_pdf_carta(Objeto.objects.get(id=pk))
+
+def enviar_carta_oficio(request, Objeto, pk):
+    if Objeto.__name__ == "Carta":
+        return enviar_carta_email(request, Objeto.objects.get(id=pk))
+    else:
+        return enviar_oficio_email(request, Objeto.objects.get(id=pk))

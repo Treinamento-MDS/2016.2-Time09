@@ -373,16 +373,13 @@ class GerarPDFCartaView(View):
     http_method_names = [u'get']
 
     def get(self, request, pk):
-        carta = Carta.objects.get(id=pk)
-        return gerar_pdf_carta(carta)
+        return gerar_pdf_carta_oficio(Carta, pk)
 
 class EnviarCartaView(View):
     http_method_names = [u'post']
 
     def post(self, request, pk):
-        carta = Carta.objects.get(id=pk)
-        return enviar_carta_email(request, carta)
-
+        return enviar_carta_oficio(request, Carta, pk)
 
 class BuscaContatosView(ListView):
     http_method_names = [u'post']
@@ -498,15 +495,13 @@ class GerarPDFOficioView(View):
     http_method_names = [u'get']
 
     def get(self, request, pk):
-        oficio = Oficio.objects.get(id=pk)
-        return gerar_pdf_oficio(oficio)
+        return gerar_pdf_carta_oficio(Oficio, pk)
 
 class EnviarOficioView(View):
     http_method_names = [u'post']
 
     def post(self, request, pk):
-        oficio = Oficio.objects.get(id=pk)
-        return enviar_oficio_email(request, oficio)
+        return enviar_carta_oficio(request, Oficio, pk)
 
 class CriarGrupoDeContatosView(View):
 
