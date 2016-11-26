@@ -8,13 +8,13 @@ import aloe_webdriver.django
 from aloe import around, world, step
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from autenticacao.models import Cidadao
+from autenticacao.models import *
 from time import sleep
 
 @around.each_example
 @contextmanager
 def with_browser(scenario,outline,steps):
-    world.browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+    world.browser = webdriver.Chrome()
     yield
     world.browser.quit()
 
