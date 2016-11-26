@@ -105,4 +105,3 @@ Scenario: Deletar Ticket
         Then I press "Tickets"
 		When I visit site page "/deletar_ticket/1"
         Then I should not see "tickettest"
-
