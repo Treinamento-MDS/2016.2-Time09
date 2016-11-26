@@ -32,6 +32,46 @@ def register(scenario):
     c.uf = 'DF'
     c.save()
 
+@step(r'A gabinete adm is registered')
+def registerAdmGabinete(scenario):
+    adm = AdministradorGabinete()
+    adm.first_name = 'test_name2'
+    adm.last_name = 'test_last2'
+    adm.username = 'test_name2'
+    adm.email = 'test@email.com2'
+    adm.set_password('123456')
+    adm.data_de_nascimento = '1990-10-10'
+    adm.sexo = 'Mascclino'
+    adm.municipio = 'Brasilia'
+    adm.uf = 'DF'
+    gab = Gabinete()
+    gab.nome_gabinete = 'gabtest'
+    gab.telefone_gabinete = '123456'
+    gab.endereco_gabinete = 'rua x'
+    gab.cidade_gabinete = 'bsb mesmo'
+    gab.cep_gabinete = '1234566'
+    gab.save()
+    adm.gabinete = gab
+    adm.save()
+
+@step(r'Eu seleciono "(.*)" de "(.*)"')
+def select(scenario, text, select_id):
+    world.browser.find_element_by_xpath("//div[@class='select-wrapper']/select[@id='%s']/../input[@class='select-dropdown']" % select_id).click()
+    world.browser.find_element_by_xpath("//li[span[contains(text(),'%s')]]" % text).click()
+
+
+
+@step(r'A gabinete is created')
+def registerGab(scenario):
+    gab = Gabinete()
+    gab.nome_gabinete = 'gabtest'
+    gab.telefone_gabinete = '123456'
+    gab.endereco_gabinete = 'rua x'
+    gab.cidade_gabinete = 'bsb mesmo'
+    gab.cep_gabinete = '1234566'
+    #registerAdm(scenario,gab)
+    gab.save()
+
 @step(r'I click in "(.*)"')
 def click(scenario, link):
   world.browser.find_element_by_link_text(link).click()
